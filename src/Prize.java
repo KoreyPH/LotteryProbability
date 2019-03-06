@@ -1,17 +1,17 @@
 public class Prize {
-    private double value;
+    private int value;
     private int originalCount;
     private int remainingCount;
-    private double totalRemainingValue;
+    private int totalRemainingValue;
 
-    public Prize(double value, int originalCount, int remainingCount, double totalRemainingValue) {
+    public Prize(int value, int originalCount, int remainingCount, int totalRemainingValue) {
         this.value = value;
         this.originalCount = originalCount;
         this.remainingCount = remainingCount;
         this.totalRemainingValue = totalRemainingValue;
     }
 
-    public double getValue() {
+    public int getValue() {
         return value;
     }
 
@@ -23,7 +23,7 @@ public class Prize {
         return remainingCount;
     }
 
-    public double getTotalRemainingValue() {
+    public int getTotalRemainingValue() {
         return totalRemainingValue;
     }
 }
