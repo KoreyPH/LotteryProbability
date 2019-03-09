@@ -42,7 +42,6 @@ public class parseWebsite {
             gamesList.add(new Game(name));
 
             Game currentGame = gamesList.get(gamesList.size() - 1);
-            int count = 0;
 
             for (Element row : table.select("tr")) {
                 //new row denotes a prize
@@ -53,6 +52,10 @@ public class parseWebsite {
                 if (tds.size() == 4) {
                     //selects <a href> tag containing name of prize
 
+                    //integers are parsed from string data on website; substrings begin
+                    //for value and remaining value to remove dollar symbol. ReplaceAll
+                    //removes commas from numbers larger than 999
+
                     int value = Integer.parseInt(tds.get(0).text().substring(1).replaceAll(",",""));
                     int originalCount = Integer.parseInt(tds.get(1).text().replaceAll(",",""));
                     int remainingCount = Integer.parseInt(tds.get(2).text().replaceAll(",",""));
@@ -61,17 +64,15 @@ public class parseWebsite {
                     Prize prize = new Prize(value, originalCount, remainingCount, remainingValue);
 
                     currentGame.addPrize(prize);
-
-
-                    //set the ticket price w/ final prize value
-                    if (count == table.childNodeSize() - 1) {
-                        //set ticket price w/ value
-                       currentGame.setCost(value);
-                    }
                 }
 
             }
 
+            //game costs are set by the amount of their smallest prize
+
+            int prizeSize = currentGame.getPrizes().size();
+            Prize lastPrize = currentGame.getPrizes().get(prizeSize - 1);
+            currentGame.setCost(lastPrize.getValue());
 
         }
 
