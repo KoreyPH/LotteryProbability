@@ -12,6 +12,8 @@ public class LotteryProbability {
 
     public static void main(String[] args) {
 
+        long startTime = System.nanoTime();
+
         ArrayList<Game> gamesList = parseWebsite.scrapeWebsite();
 
         System.out.print("Displaying the ticket with the overall best odds: \n");
@@ -27,9 +29,13 @@ public class LotteryProbability {
 
         }
         Game winner = gamesList.get(bestOddsIndex);
+
+        long endTime = System.nanoTime();
+        long totalTime = (endTime - startTime) / 1000000000;
         System.out.print("The current best odds game is " + winner.getTitle() + " with odds of winning being 1 in " + lowestOdds + ".\n");
         System.out.print("The cost of this ticket is " + winner.getCost() + " dollars");
 
+        System.out.print("\nCompleted in " + totalTime + " seconds");
 
     }
 }
