@@ -43,4 +43,8 @@ public class Game {
        this.odds = odds;
     }
 
+    public double getOdds() {
+       return odds;
+    }
+
 }
