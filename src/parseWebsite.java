@@ -31,17 +31,36 @@ public class parseWebsite {
         Elements tables = document.select("table[class=datatable]");
 
 
-        Elements rows = tables.select("tr");
-
         for (Element table : tables) {
             //new table means a new game
 
             Elements gameName = table.select("[class=gamename]").select("a");
             String name = gameName.text();
 
+
+            String hyperlink = "https://www.nclottery.com" + gameName.attr("href");
+            Document cardPage = null;
+
+            //connect to ticket's details page
+            try {
+                cardPage = Jsoup.connect(hyperlink).get();
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+
+            Element ticketData = cardPage.select("table[class=juxtable]").first();
+            Element valueRow = ticketData.select("tr").get(1).select("td").get(1);
+            Element oddsRow =  ticketData.select("tr").get(3).select("td").get(1);
+
+            int value = Integer.parseInt(valueRow.text().substring(1).replaceAll(",",""));
+            double odds = Double.valueOf(oddsRow.text().substring(4,oddsRow.text().length() - 1));
+
             gamesList.add(new Game(name));
 
             Game currentGame = gamesList.get(gamesList.size() - 1);
+
+            currentGame.setOdds(odds);
+            currentGame.setCost(value);
 
             for (Element row : table.select("tr")) {
                 //new row denotes a prize
@@ -56,10 +75,11 @@ public class parseWebsite {
                     //for value and remaining value to remove dollar symbol. ReplaceAll
                     //removes commas from numbers larger than 999
 
-                    int value = Integer.parseInt(tds.get(0).text().substring(1).replaceAll(",",""));
+
                     int originalCount = Integer.parseInt(tds.get(1).text().replaceAll(",",""));
                     int remainingCount = Integer.parseInt(tds.get(2).text().replaceAll(",",""));
                     int remainingValue = Integer.parseInt(tds.get(3).text().substring(1).replaceAll(",",""));
+
 
                     Prize prize = new Prize(value, originalCount, remainingCount, remainingValue);
 
@@ -67,12 +87,6 @@ public class parseWebsite {
                 }
 
             }
-
-            //game costs are set by the amount of their smallest prize
-
-            int prizeSize = currentGame.getPrizes().size();
-            Prize lastPrize = currentGame.getPrizes().get(prizeSize - 1);
-            currentGame.setCost(lastPrize.getValue());
 
         }
 

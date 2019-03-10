@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class Game {
     private String title;
     private int cost;
+    private double odds;
     private ArrayList<Prize> prizes;
 
 
@@ -36,6 +37,10 @@ public class Game {
 
     public void setCost(int cost) {
        this.cost = cost;
+    }
+
+    public void setOdds(double odds) {
+       this.odds = odds;
     }
 
 }
