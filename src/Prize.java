@@ -19,7 +19,7 @@ public class Prize {
         return originalCount;
     }
 
-    public int getRemainingCount() {
+    public int getRemainingPrizeCount() {
         return remainingCount;
     }
 

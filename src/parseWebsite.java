@@ -36,6 +36,7 @@ public class parseWebsite {
 
             Elements gameName = table.select("[class=gamename]").select("a");
             String name = gameName.text();
+            int remainingWinners = 0;
 
 
             String hyperlink = "https://www.nclottery.com" + gameName.attr("href");
@@ -75,17 +76,20 @@ public class parseWebsite {
                     //for value and remaining value to remove dollar symbol. ReplaceAll
                     //removes commas from numbers larger than 999
 
-
+                    int prizeValue = Integer.parseInt(tds.get(0).text().substring(1).replaceAll(",",""));
                     int originalCount = Integer.parseInt(tds.get(1).text().replaceAll(",",""));
                     int remainingCount = Integer.parseInt(tds.get(2).text().replaceAll(",",""));
                     int remainingValue = Integer.parseInt(tds.get(3).text().substring(1).replaceAll(",",""));
 
+                    remainingWinners += remainingCount;
 
-                    Prize prize = new Prize(value, originalCount, remainingCount, remainingValue);
+
+                    Prize prize = new Prize(prizeValue, originalCount, remainingCount, remainingValue);
 
                     currentGame.addPrize(prize);
                 }
-
+                    //after all the rows, we know how many prizes are left
+                    currentGame.setRemainingWinners(remainingWinners);
             }
 
         }
