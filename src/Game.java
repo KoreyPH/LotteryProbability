@@ -8,17 +8,16 @@ public class Game {
     private int remainingWinners;
 
 
-
-   public Game(String title, int cost) {
+    public Game(String title, int cost) {
         this.title = title;
         this.cost = cost;
         prizes = new ArrayList<>();
-   }
+    }
 
-   public Game(String title) {
+    public Game(String title) {
         this.title = title;
-       prizes = new ArrayList<>();
-   }
+        prizes = new ArrayList<>();
+    }
 
     public double calculateExpectedValue() {
         double expectedValue = 0;
@@ -27,7 +26,7 @@ public class Game {
         int investment = getCost();
 
         //1 in x odds as a percentage chance
-        double percentOdds = 1/getOdds();
+        double percentOdds = 1 / getOdds();
         //what the chance is in losing the game
         double losingChance = 1 - percentOdds;
 
@@ -75,23 +74,23 @@ public class Game {
     }
 
     public void setCost(int cost) {
-       this.cost = cost;
+        this.cost = cost;
     }
 
     public void setOdds(double odds) {
-       this.odds = odds;
+        this.odds = odds;
     }
 
     public double getOdds() {
-       return odds;
+        return odds;
     }
 
     public int getRemainingWinners() {
-       return remainingWinners;
+        return remainingWinners;
     }
 
     public void setRemainingWinners(int remainingWinners) {
-       this.remainingWinners = remainingWinners;
+        this.remainingWinners = remainingWinners;
     }
 
 }

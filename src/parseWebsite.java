@@ -1,6 +1,6 @@
-/**
- * parse https://www.nclottery.com/ScratchOffPrizes
- **/
+/*
+  parse https://www.nclottery.com/ScratchOffPrizes
+ */
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,9 +14,6 @@ import org.jsoup.select.Elements;
 public class parseWebsite {
 
 
-
-
-
     public static ArrayList<Game> scrapeWebsite() {
 
         Document document = null;
@@ -26,7 +23,7 @@ public class parseWebsite {
             e.printStackTrace();
         }
         //create a list of games
-         ArrayList<Game> gamesList = new ArrayList<>();
+        ArrayList<Game> gamesList = new ArrayList<>();
 
         Elements tables = document.select("table[class=datatable]");
 
@@ -49,10 +46,13 @@ public class parseWebsite {
                 exception.printStackTrace();
             }
 
-
+            //capture table of ticket details
             Element ticketData = cardPage.select("table[class=juxtable]").first();
+            //element where value is stored
             Element valueRow = ticketData.select("tr").get(1).select("td").get(1);
+
             Element oddsRow = ticketData.select("tr").get(3).select("td").get(1);
+
             Element statusRow = ticketData.select("tr").get(6).select("td").get(1);
 
             String status = statusRow.text();
@@ -103,7 +103,7 @@ public class parseWebsite {
             }
         }
 
-    return gamesList;
+        return gamesList;
     }
 
 

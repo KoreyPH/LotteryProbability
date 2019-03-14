@@ -1,8 +1,6 @@
-/**
- * @author Korey Heiser
+/*
+  @author Korey Heiser
  * entrypoint of program
- *
- *
  */
 
 import java.util.ArrayList;
@@ -10,7 +8,7 @@ import java.util.ArrayList;
 public class LotteryProbability {
 
 
-    public static int gameWithBestExpectedValue(ArrayList<Game> games) {
+    private static int gameWithBestExpectedValue(ArrayList<Game> games) {
         int bestGameIndex = 0;
         double bestMargin = -99999999999.99;
         for (int i = 0; i < games.size(); i++) {
