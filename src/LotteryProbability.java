@@ -12,15 +12,13 @@ public class LotteryProbability {
 
     public static int gameWithBestExpectedValue(ArrayList<Game> games) {
         int bestGameIndex = 0;
+        double bestMargin = -99999999999.99;
         for (int i = 0; i < games.size(); i++) {
-
-            double bestMargin = Double.MIN_VALUE;
-
 
             Game currentGame = games.get(i);
             double currentExpectedValue = currentGame.calculateExpectedValue();
 
-            if (currentExpectedValue > bestMargin) {
+            if (currentExpectedValue >= bestMargin) {
                 bestMargin = currentExpectedValue;
                 bestGameIndex = i;
             }

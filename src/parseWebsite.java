@@ -49,49 +49,58 @@ public class parseWebsite {
                 exception.printStackTrace();
             }
 
+
             Element ticketData = cardPage.select("table[class=juxtable]").first();
             Element valueRow = ticketData.select("tr").get(1).select("td").get(1);
-            Element oddsRow =  ticketData.select("tr").get(3).select("td").get(1);
+            Element oddsRow = ticketData.select("tr").get(3).select("td").get(1);
+            Element statusRow = ticketData.select("tr").get(6).select("td").get(1);
 
-            int value = Integer.parseInt(valueRow.text().substring(1).replaceAll(",",""));
-            double odds = Double.valueOf(oddsRow.text().substring(4,oddsRow.text().length() - 1));
+            String status = statusRow.text();
 
-            gamesList.add(new Game(name));
-
-            Game currentGame = gamesList.get(gamesList.size() - 1);
-
-            currentGame.setOdds(odds);
-            currentGame.setCost(value);
-
-            for (Element row : table.select("tr")) {
-                //new row denotes a prize
-
-                Elements tds = row.select("td");
-
-                //ensure row has necessary amount of info to parse
-                if (tds.size() == 4) {
-                    //selects <a href> tag containing name of prize
-
-                    //integers are parsed from string data on website; substrings begin
-                    //for value and remaining value to remove dollar symbol. ReplaceAll
-                    //removes commas from numbers larger than 999
-
-                    int prizeValue = Integer.parseInt(tds.get(0).text().substring(1).replaceAll(",",""));
-                    int originalCount = Integer.parseInt(tds.get(1).text().replaceAll(",",""));
-                    int remainingCount = Integer.parseInt(tds.get(2).text().replaceAll(",",""));
-                    int remainingValue = Integer.parseInt(tds.get(3).text().substring(1).replaceAll(",",""));
-
-                    remainingWinners += remainingCount;
+            if (!status.equals("On Pickup") && !status.equals("Ended, Claims Only")) {
 
 
-                    Prize prize = new Prize(prizeValue, originalCount, remainingCount, remainingValue);
+                int value = Integer.parseInt(valueRow.text().substring(1).replaceAll(",", ""));
+                double odds = Double.valueOf(oddsRow.text().substring(4, oddsRow.text().length() - 1));
 
-                    currentGame.addPrize(prize);
-                }
+                gamesList.add(new Game(name));
+
+                Game currentGame = gamesList.get(gamesList.size() - 1);
+
+                currentGame.setOdds(odds);
+                currentGame.setCost(value);
+
+
+                for (Element row : table.select("tr")) {
+                    //new row denotes a prize
+
+                    Elements tds = row.select("td");
+
+                    //ensure row has necessary amount of info to parse
+                    if (tds.size() == 4) {
+                        //selects <a href> tag containing name of prize
+
+                        //integers are parsed from string data on website; substrings begin
+                        //for value and remaining value to remove dollar symbol. ReplaceAll
+                        //removes commas from numbers larger than 999
+
+                        int prizeValue = Integer.parseInt(tds.get(0).text().substring(1).replaceAll(",", ""));
+                        int originalCount = Integer.parseInt(tds.get(1).text().replaceAll(",", ""));
+                        int remainingCount = Integer.parseInt(tds.get(2).text().replaceAll(",", ""));
+                        int remainingValue = Integer.parseInt(tds.get(3).text().substring(1).replaceAll(",", ""));
+
+                        remainingWinners += remainingCount;
+
+
+                        Prize prize = new Prize(prizeValue, originalCount, remainingCount, remainingValue);
+
+                        currentGame.addPrize(prize);
+                    }
                     //after all the rows, we know how many prizes are left
                     currentGame.setRemainingWinners(remainingWinners);
-            }
+                }
 
+            }
         }
 
     return gamesList;
